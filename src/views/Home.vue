@@ -2,6 +2,7 @@
   <div class="showblog">
       <h3>博客总览</h3>
       <input type="text" v-model="search" placeholder="搜索">
+      <h3 v-if="loading">loading......</h3>
       <div v-for="blog in filteredBlogs" class="single-blog" :key="blog.id">
           <router-link :to="/blog/+blog.id"><h2>{{blog.title}}</h2></router-link>
           <article>
@@ -18,10 +19,12 @@ export default {
   data(){
       return {
           blogs: [],
-          search: ''
+          search: '',
+          loading: false
       }
   },
   created(){
+      this.loading = true;
     //   this.$http.get("https://jsonplaceholder.typicode.com/posts").then(function(data){
     //       this.blogs = data.body.slice(0,10);
     //       console.log(this.blogs);
@@ -40,6 +43,7 @@ export default {
               blogsArr.push(data[key]);
           }
           this.blogs = blogsArr;
+          this.loading = false;
       });
   },
   computed:{
